@@ -1,0 +1,836 @@
+{
+  "name": "RESUME ANALYSER",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create spreadsheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "YOUR_SHEET_URL"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Matched",
+              "displayName": "Matched",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Unmatched",
+              "displayName": "Unmatched",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Match %",
+              "displayName": "Match %",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "averageMatchPercentage",
+              "displayName": "averageMatchPercentage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "overallRating",
+              "displayName": "overallRating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -2592,
+        -352
+      ],
+      "id": "6e9162fa-8781-42df-9f0e-d8842fa16e2d",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_ME",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2816,
+        -352
+      ],
+      "id": "df63c4a1-d173-46e3-8a1c-37f14f004588",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "={{ $json.NAME }}\n{{ $json[\"DATE \"] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -2832,
+        -560
+      ],
+      "id": "9eafc807-efb7-4e97-87c7-6ff23016f6c0",
+      "name": "Create spreadsheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_ME",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "REPLACE_ME",
+        "text": "=HERE IS YOUR URL\n{{ $json.sheetUrl }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1920,
+        -352
+      ],
+      "id": "da13be98-e55b-4646-87f6-0eafd8b144dc",
+      "name": "Send a text message",
+      "webhookId": "cb6c45f7-d2c5-434d-ad76-2036a63cfb1d",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": " N8N TESTING"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2880,
+        -992
+      ],
+      "id": "d9bd3b16-4da3-456d-bf5a-706564573fa7",
+      "name": "TAKES RESUME",
+      "webhookId": "43800a51-d5a5-420e-9251-7b34aaa48563",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": " N8N TESTING"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "REPLACE_ME",
+        "message": "SET GOOGLE SEETS NAME",
+        "responseType": "freeText",
+        "options": {
+          "messageButtonLabel": "ENTER NAME OF SHEETS",
+          "responseFormTitle": "SHEETS NAME",
+          "responseFormButtonLabel": "Submit",
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 10000,
+              "resumeUnit": "days"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2656,
+        -992
+      ],
+      "id": "e67334ee-0b96-4501-a44b-e411310716a5",
+      "name": "TAKE GOOGLE SHEETS NAME",
+      "webhookId": "5f340d53-e229-48d7-93ce-c94ae468a444",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": " N8N TESTING"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "REPLACE_ME",
+        "message": "PLEASE SEND YOUR JOB DESCRIPTION",
+        "responseType": "freeText",
+        "options": {
+          "messageButtonLabel": "ENTER DESCRIPTION",
+          "responseFormTitle": "JOB DESCRIPTION",
+          "responseFormButtonLabel": "Submit",
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 10000,
+              "resumeUnit": "days"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2432,
+        -992
+      ],
+      "id": "cc181b1b-46f1-4108-a21c-e9d34c075105",
+      "name": "TAKE JOB DESCRIPTION",
+      "webhookId": "5f340d53-e229-48d7-93ce-c94ae468a444",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": " N8N TESTING"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5ebf071-8d6c-42f5-ad67-3caaf2662db4",
+              "name": "description",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2208,
+        -992
+      ],
+      "id": "ac4317df-c073-4ef3-a672-16cc8b6c1140",
+      "name": "EXTRACT DESCRIPTION"
+    },
+    {
+      "parameters": {
+        "jsCode": " // Helper function to remove emojis\nfunction removeEmojis(text) {\n  return text.replace(/[\\p{Emoji_Presentation}\\p{Extended_Pictographic}]/gu, '');\n}\n\nconst rawText = $json.description;\n\nconst cleanedText = rawText\n  .replace(/[\\n\\r\\\\]+/g, ' ')                          // Remove newlines and slashes\n  .replace(/[*•▪️●]/g, '')                             // Remove bullets (but keep + and -)\n  .replace(/[“”‘’'\"`#_~>|]/g, '')                      // Remove markdown/special formatting\n  .replace(/\\s+/g, ' ')                                // Normalize spaces\n  .replace(/&[a-z]+;/g, '')                            // Remove HTML entities\n  .replace(/[^\\x00-\\x7F]+/g, '')                       // Remove non-ASCII characters\n  .trim();\n\nconst finalText = removeEmojis(cleanedText);\n\nreturn [\n  {\n    json: {\n      CLEAN_DESCRIPTION: finalText\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1968,
+        -992
+      ],
+      "id": "3d1e7006-ce80-4b02-a573-6e550089aa6d",
+      "name": " CLEAN IT"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('TAKES RESUME').item.json.message?.photo ? $('TAKES RESUME').item.json.message.photo.at(-1).file_id : (['application/pdf','image/png','image/jpeg','image/jpg'].includes($('TAKES RESUME').item.json.message?.document?.mime_type) ? $('TAKES RESUME').item.json.message.document.file_id : '') }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1696,
+        -992
+      ],
+      "id": "909ca757-dc37-4ff9-bdbe-27b569e85402",
+      "name": "DOWNLOAD RESUME",
+      "webhookId": "b0ecea23-5e48-47b5-83e5-471b5386cda9",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": " N8N TESTING"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df94fe94-2da2-4bd2-b251-4b12fe59958f",
+              "name": "url",
+              "value": "=https://api.telegram.org/file/botYOUR_TELEGRAM_BOT_TOKEN/{{$json.result.file_path}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2816,
+        -768
+      ],
+      "id": "ada0d7d2-5d2c-48e2-b545-7d00950e2074",
+      "name": "EXTRACT LINK"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type\t",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization\t",
+              "value": "Bearer YOUR_MISTRAL_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"include_image_base64\": true,\n  \"document\": {\n    \"type\": \"{{ $json.mime_type?.startsWith('image/') ? 'image_url' : 'document_url' }}\",\n    \"document_url\": \"{{ $json.url }}\"\n  }\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2608,
+        -768
+      ],
+      "id": "c0bee064-528e-4cac-9b31-1ae5b60123dc",
+      "name": "EXTRACT TEXT FROM OCR"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a9f334e7-d94f-4e50-b40a-0bbc39b8f6a4",
+              "name": "TEXT",
+              "value": "={{ $json.body.pages[0].markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2384,
+        -768
+      ],
+      "id": "8a50e51e-b383-4d4f-896a-02f37c0a49b7",
+      "name": "TEXT "
+    },
+    {
+      "parameters": {
+        "jsCode": "function removeEmojis(text) {\n  return text.replace(/[\\p{Emoji_Presentation}\\p{Extended_Pictographic}]/gu, '');\n}\n\nconst rawText = $json.TEXT;\n\nconst cleanedText = rawText\n  .replace(/[\\n\\r\\\\]+/g, ' ')                          // Remove newlines and slashes\n  .replace(/[*•▪️●]/g, '')                             // Remove bullets but KEEP + and -\n  .replace(/[“”‘’'\"`#_~>|]/g, '')                      // Remove formatting symbols\n  .replace(/\\s+/g, ' ')                                // Normalize spaces\n  .replace(/&[a-z]+;/g, '')                            // Remove HTML entities\n  .replace(/[^\\x00-\\x7F]+/g, '')                       // Remove non-ASCII\n  .trim();\n\nconst finalText = removeEmojis(cleanedText);\n\nreturn [\n  {\n    json: {\n      CLEAN_TEXT: finalText\n    }\n  }\n];\n "
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2144,
+        -768
+      ],
+      "id": "d743bd3c-fd39-4678-b212-1738f1bc48bf",
+      "name": "CLEAN IT"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-goog-api-key",
+              "value": "YOUR_GEMINI_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"You are an expert Resume Analyzer AI.\\n\\nYour task is to compare a given job description with a candidate's resume. Evaluate them across **10 categories** listed below, and output a structured JSON showing matched and unmatched keywords for each category.\\n\\n### Categories to Analyze:\\n1. Technical Skills\\n2. Soft Skills / Interpersonal Skills\\n3. Job Titles / Roles\\n4. Certifications / Degrees\\n5. Experience Keywords\\n6. Tools & Technologies\\n7. Action Verbs\\n8. Domain Knowledge / Industry Terms\\n9. Job Description Phrases\\n10. Languages / Regional Requirements\\n\\n---\\n\\n### Instructions:\\n- Extract relevant keywords from both the Job Description and Resume.\\n- Match them under the appropriate categories.\\n- Mark matched and unmatched keywords in separate arrays.\\n- Count totals and give a match percentage per category.\\n- Conclude with an overall match score and improvement suggestions.\\n\\n---\\n\\n### Output JSON Format:\\n{\\n  \\\"categories\\\": {\\n    \\\"Technical Skills\\\": {\\n      \\\"matched\\\": [...],\\n      \\\"unmatched\\\": [...],\\n      \\\"matchPercentage\\\": \\\"xx%\\\"\\n    },\\n    \\\"Soft Skills\\\": {\\n      \\\"matched\\\": [...],\\n      \\\"unmatched\\\": [...],\\n      \\\"matchPercentage\\\": \\\"xx%\\\"\\n    },\\n    ...\\n  },\\n  \\\"overallMatchScore\\\": \\\"xx%\\\",\\n  \\\"matchRating\\\": \\\"Excellent | Good | Average | Poor\\\",\\n  \\\"suggestedImprovements\\\": [\\n    \\\"Add XYZ to resume\\\",\\n    \\\"Mention ABC certifications\\\"\\n  ]\\n}\\n\\n---\\n\\n### Job Description:\\n\\\"\\\"\\\"\\n{{ $(' CLEAN IT').item.json.CLEAN_DESCRIPTION }}\\n\\\"\\\"\\\"\\n\\n### Resume:\\n\\\"\\\"\\\"\\n{{ $json.CLEAN_TEXT }}\\n\\\"\\\"\\\"\"\n        }\n      ]\n    }\n  ]\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1920,
+        -768
+      ],
+      "id": "e856dc3a-1690-4cd3-a019-8da8b7acc27a",
+      "name": "COMPARES AND ANALYSIS"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1ba376f-08d2-4373-a7f8-b57b259b6fa1",
+              "name": "NAME",
+              "value": "={{ $('TAKE GOOGLE SHEETS NAME').item.json.data.text }}",
+              "type": "string"
+            },
+            {
+              "id": "97dd82e0-ba99-4a53-8f89-d6f54db2c3b2",
+              "name": "DATE ",
+              "value": "={{ $json.headers.date }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1664,
+        -768
+      ],
+      "id": "65cc85fe-a7fd-441f-abed-1c0fd9f25e00",
+      "name": "EXTRACT ANALYSIS"
+    },
+    {
+      "parameters": {
+        "jsCode": " const input = $json.text; // This is the entire string containing ```json {...} ```\n\n// 1. Extract JSON block from triple backticks\nconst jsonMatch = input.match(/```json\\s*([\\s\\S]+?)\\s*```/);\nif (!jsonMatch || !jsonMatch[1]) {\n  throw new Error(\"No valid JSON block found.\");\n}\n\nconst parsed = JSON.parse(jsonMatch[1]);\n\nconst categories = parsed.categories;\n\nconst output = [];\n\nfor (const [category, details] of Object.entries(categories)) {\n  output.push({\n    category,\n    matched: details.matched?.join(', ') || '',\n    unmatched: details.unmatched?.join(', ') || '',\n    matchPercentage: details.matchPercentage || '0%'\n  });\n}\n\nreturn output.map(row => ({ json: row }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2384,
+        -560
+      ],
+      "id": "02cc4177-bce8-4f1b-84a5-0467334fa6b5",
+      "name": " CLEANS IT"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe426347-37e5-4196-8499-b9935956a14a",
+              "name": "text",
+              "value": "={{ $('COMPARES AND ANALYSIS').item.json.body.candidates[0].content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2608,
+        -560
+      ],
+      "id": "2cb6751e-07c2-4910-beb9-526cfffb8f2e",
+      "name": "EXTRAT ANALYSIS"
+    },
+    {
+      "parameters": {
+        "jsCode": " const inputArray = items.map(item => item.json);\n\nconst output = inputArray.map(entry => {\n  return {\n    json: {\n      Category: entry.category || '—',\n      Matched: entry.matched?.trim() || '—',\n      Unmatched: entry.unmatched?.trim() || '—',\n      'Match %': entry.matchPercentage || '—',\n    }\n  };\n});\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2144,
+        -560
+      ],
+      "id": "a5acb96f-0d9a-427c-babd-ac1c1dfd2860",
+      "name": " MAKE A ARRAY"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputArray = items.map(item => item.json);\n\nfunction cleanField(value, isPercentage = false) {\n  const emptyValues = ['—', '---', '', null, undefined];\n  \n  if (emptyValues.includes(value?.trim?.())) {\n    return isPercentage ? '0%' : \"null\";\n  }\n  \n  return value;\n}\n\nconst output = inputArray.map(entry => {\n  return {\n    json: {\n      Category: entry.Category || '—',\n      Matched: cleanField(entry.Matched),\n      Unmatched: cleanField(entry.Unmatched),\n      'Match %': cleanField(entry['Match %'], true),\n    }\n  };\n});\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1920,
+        -560
+      ],
+      "id": "54952513-a25d-46b8-ab61-e0d31eb3210a",
+      "name": "CLAENS IT"
+    },
+    {
+      "parameters": {
+        "jsCode": " // Get input from previous node\nconst items = $input.all();\n\n// Extract match percentages\nconst matchPercentages = items.map(item => {\n  const percentStr = item.json[\"Match %\"];\n  const percent = parseFloat(percentStr.replace('%', ''));\n  return isNaN(percent) ? 0 : percent;\n});\n\n// Calculate average\nconst total = matchPercentages.reduce((sum, val) => sum + val, 0);\nconst average = matchPercentages.length > 0 ? total / matchPercentages.length : 0;\n\n// Determine rating\nlet rating;\nif (average >= 90) {\n  rating = \"Excellent\";\n} else if (average >= 75) {\n  rating = \"Good\";\n} else if (average >= 50) {\n  rating = \"Average\";\n} else {\n  rating = \"Bad\";\n}\n\n// Return output for next node\nreturn [\n  {\n    json: {\n      averageMatchPercentage: average.toFixed(2) + '%',\n      overallRating: rating\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1664,
+        -560
+      ],
+      "id": "4f956e05-eed7-4a14-a80d-0dde5252daf5",
+      "name": "MAKE OVERALL REVIEW"
+    },
+    {
+      "parameters": {
+        "jsCode": " // Access the first item from \"Create spreadsheet\"\nconst spreadsheetId = $('Create spreadsheet').first().json.spreadsheetId;\n\n// Return it as a new JSON item\nreturn [\n  {\n    json: {\n      spreadsheetId: spreadsheetId\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2368,
+        -352
+      ],
+      "id": "7b5db8f7-5a3a-41c9-ae31-a99055cd4ee6",
+      "name": "EXTRACT ID"
+    },
+    {
+      "parameters": {
+        "jsCode": " const id = $('Create spreadsheet').first().json.spreadsheetId;\n\nreturn [\n  {\n    json: {\n      sheetUrl: `https://docs.google.com/spreadsheets/d/${id}/edit`\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2160,
+        -352
+      ],
+      "id": "0b275a47-7087-4c63-b76f-0537ea1cd731",
+      "name": "GENERATE LINK"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "EXTRACT ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "EXTRAT ANALYSIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TAKES RESUME": {
+      "main": [
+        [
+          {
+            "node": "TAKE GOOGLE SHEETS NAME",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TAKE GOOGLE SHEETS NAME": {
+      "main": [
+        [
+          {
+            "node": "TAKE JOB DESCRIPTION",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TAKE JOB DESCRIPTION": {
+      "main": [
+        [
+          {
+            "node": "EXTRACT DESCRIPTION",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EXTRACT DESCRIPTION": {
+      "main": [
+        [
+          {
+            "node": " CLEAN IT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " CLEAN IT": {
+      "main": [
+        [
+          {
+            "node": "DOWNLOAD RESUME",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DOWNLOAD RESUME": {
+      "main": [
+        [
+          {
+            "node": "EXTRACT LINK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EXTRACT LINK": {
+      "main": [
+        [
+          {
+            "node": "EXTRACT TEXT FROM OCR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EXTRACT TEXT FROM OCR": {
+      "main": [
+        [
+          {
+            "node": "TEXT ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TEXT ": {
+      "main": [
+        [
+          {
+            "node": "CLEAN IT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLEAN IT": {
+      "main": [
+        [
+          {
+            "node": "COMPARES AND ANALYSIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "COMPARES AND ANALYSIS": {
+      "main": [
+        [
+          {
+            "node": "EXTRACT ANALYSIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EXTRACT ANALYSIS": {
+      "main": [
+        [
+          {
+            "node": "Create spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " CLEANS IT": {
+      "main": [
+        [
+          {
+            "node": " MAKE A ARRAY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EXTRAT ANALYSIS": {
+      "main": [
+        [
+          {
+            "node": " CLEANS IT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " MAKE A ARRAY": {
+      "main": [
+        [
+          {
+            "node": "CLAENS IT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLAENS IT": {
+      "main": [
+        [
+          {
+            "node": "MAKE OVERALL REVIEW",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MAKE OVERALL REVIEW": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "EXTRACT ID": {
+      "main": [
+        [
+          {
+            "node": "GENERATE LINK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GENERATE LINK": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "REPLACE_ME",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "REPLACE_ME"
+  },
+  "id": "REPLACE_ME",
+  "tags": []
+}
